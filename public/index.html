@@ -1,0 +1,1772 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="theme-color"
+    content="#07070a"
+  >
+
+  <title>t00ns Intelligence</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --bg: #07070a;
+      --panel: rgba(19, 19, 25, 0.76);
+      --panel-solid: #121218;
+      --panel-hover: #181820;
+      --input: rgba(8, 8, 12, 0.78);
+
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.16);
+
+      --text: #f7f7fa;
+      --muted: #9696a3;
+      --muted-light: #c1c1ca;
+
+      --accent: #8b5cf6;
+      --accent-bright: #a78bfa;
+      --accent-soft: rgba(139, 92, 246, 0.13);
+
+      --green: #52dda1;
+      --orange: #ffb15c;
+      --red: #ff727e;
+      --blue: #69aaff;
+
+      --radius-small: 12px;
+      --radius: 18px;
+      --radius-large: 26px;
+
+      --shadow:
+        0 30px 80px rgba(0, 0, 0, 0.35);
+
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at 8% -5%,
+          rgba(139, 92, 246, 0.23),
+          transparent 31%
+        ),
+        radial-gradient(
+          circle at 94% 7%,
+          rgba(56, 110, 255, 0.12),
+          transparent 27%
+        ),
+        radial-gradient(
+          circle at 65% 100%,
+          rgba(139, 92, 246, 0.07),
+          transparent 30%
+        ),
+        var(--bg);
+
+      color: var(--text);
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+
+      background-image:
+        linear-gradient(
+          rgba(255, 255, 255, 0.017) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.017) 1px,
+          transparent 1px
+        );
+
+      background-size: 42px 42px;
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          transparent 80%
+        );
+
+      pointer-events: none;
+      content: "";
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      width: min(1480px, 100%);
+      margin: 0 auto;
+      padding: 18px 22px 70px;
+    }
+
+    .glass {
+      border: 1px solid var(--border);
+      background: var(--panel);
+
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 14px;
+      z-index: 30;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+
+      padding: 13px 15px;
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 16px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      position: relative;
+
+      display: grid;
+      flex: 0 0 auto;
+      place-items: center;
+
+      width: 43px;
+      height: 43px;
+
+      border:
+        1px solid rgba(167, 139, 250, 0.42);
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(139, 92, 246, 0.4),
+          rgba(139, 92, 246, 0.08)
+        );
+
+      color: #ddd2ff;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+    }
+
+    .brand-mark::after {
+      position: absolute;
+      right: -2px;
+      bottom: -2px;
+
+      width: 10px;
+      height: 10px;
+
+      border: 2px solid #111116;
+      border-radius: 50%;
+
+      background: var(--green);
+      content: "";
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-name {
+      overflow: hidden;
+      font-size: 15px;
+      font-weight: 720;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .brand-subtitle {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .network {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 8px 11px;
+
+      border: 1px solid var(--border);
+      border-radius: 999px;
+
+      color: var(--muted-light);
+      font-size: 13px;
+    }
+
+    .network-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+      background: var(--green);
+
+      box-shadow:
+        0 0 15px rgba(82, 221, 161, 0.8);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(320px, 0.65fr);
+      gap: 18px;
+
+      padding: 55px 4px 26px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      margin-bottom: 16px;
+      padding: 7px 10px;
+
+      border:
+        1px solid rgba(167, 139, 250, 0.22);
+
+      border-radius: 999px;
+
+      background: var(--accent-soft);
+      color: #c9baff;
+
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 850px;
+      margin: 0;
+
+      font-size:
+        clamp(38px, 6vw, 76px);
+
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+
+    .gradient-text {
+      background:
+        linear-gradient(
+          110deg,
+          #ffffff 5%,
+          #a78bfa 55%,
+          #79a9ff 100%
+        );
+
+      background-clip: text;
+      -webkit-background-clip: text;
+
+      color: transparent;
+    }
+
+    .hero-copy {
+      max-width: 680px;
+      margin: 22px 0 0;
+
+      color: var(--muted-light);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .hero-side {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-card {
+      width: 100%;
+      padding: 20px;
+
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card-label {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .hero-card-value {
+      margin-top: 8px;
+
+      font-size: 34px;
+      font-weight: 760;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-top: 18px;
+      padding-top: 16px;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .hero-card-note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 6px 9px;
+
+      border:
+        1px solid rgba(82, 221, 161, 0.24);
+
+      border-radius: 999px;
+
+      background:
+        rgba(82, 221, 161, 0.08);
+
+      color: #8af0c3;
+      font-size: 12px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      gap: 13px;
+
+      margin-bottom: 18px;
+    }
+
+    .metric {
+      min-width: 0;
+      padding: 17px;
+
+      border-radius: var(--radius);
+      transition:
+        border-color 160ms ease,
+        transform 160ms ease;
+    }
+
+    .metric:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      overflow: hidden;
+      margin-top: 8px;
+
+      font-size: 25px;
+      font-weight: 740;
+      letter-spacing: -0.045em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .metric-foot {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1.6fr)
+        minmax(330px, 0.62fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      overflow: hidden;
+      border-radius: var(--radius-large);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+
+      padding: 20px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 690;
+      letter-spacing: -0.02em;
+    }
+
+    .panel-description {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .field {
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      height: 43px;
+      padding: 0 13px;
+
+      border:
+        1px solid var(--border-hover);
+
+      border-radius: var(--radius-small);
+
+      outline: none;
+
+      background: var(--input);
+      color: var(--text);
+
+      transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease,
+        background 150ms ease;
+    }
+
+    input::placeholder {
+      color: #696976;
+    }
+
+    input:hover {
+      background: rgba(12, 12, 17, 0.92);
+    }
+
+    input:focus {
+      border-color: var(--accent);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(139, 92, 246, 0.12);
+    }
+
+    #limit {
+      width: 80px;
+    }
+
+    .primary-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      height: 43px;
+      padding: 0 15px;
+
+      border:
+        1px solid rgba(167, 139, 250, 0.42);
+
+      border-radius: var(--radius-small);
+
+      background:
+        linear-gradient(
+          145deg,
+          #8b5cf6,
+          #7047db
+        );
+
+      color: white;
+      font-weight: 680;
+      white-space: nowrap;
+
+      box-shadow:
+        0 9px 25px
+        rgba(111, 70, 220, 0.24);
+
+      transition:
+        transform 150ms ease,
+        filter 150ms ease;
+    }
+
+    .primary-button:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .primary-button:disabled {
+      cursor: wait;
+      filter: none;
+      opacity: 0.55;
+      transform: none;
+    }
+
+    .button-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .status-message {
+      min-height: 20px;
+      margin: 0;
+      padding: 13px 20px 0;
+
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-message.error {
+      color: var(--red);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      padding: 10px 14px 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    th,
+    td {
+      padding: 13px 11px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 620;
+      letter-spacing: 0.075em;
+      text-transform: uppercase;
+    }
+
+    td {
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    tbody tr {
+      transition:
+        background 150ms ease;
+    }
+
+    tbody tr:hover {
+      background:
+        rgba(255, 255, 255, 0.025);
+    }
+
+    .position {
+      color: var(--muted);
+    }
+
+    .token-number {
+      font-weight: 720;
+    }
+
+    .price {
+      font-weight: 680;
+    }
+
+    .rank-text {
+      color: var(--muted-light);
+    }
+
+    .tier {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 5px 9px;
+
+      border: 1px solid var(--border);
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.035);
+
+      font-size: 11px;
+      font-weight: 680;
+    }
+
+    .tier-legendary {
+      border-color:
+        rgba(255, 177, 92, 0.3);
+
+      background:
+        rgba(255, 177, 92, 0.09);
+
+      color: #ffc47e;
+    }
+
+    .tier-epic {
+      border-color:
+        rgba(167, 139, 250, 0.3);
+
+      background:
+        rgba(139, 92, 246, 0.11);
+
+      color: #c5b3ff;
+    }
+
+    .tier-rare {
+      border-color:
+        rgba(105, 170, 255, 0.28);
+
+      background:
+        rgba(105, 170, 255, 0.08);
+
+      color: #9ac7ff;
+    }
+
+    .market-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+
+      color: #c0afff;
+      font-weight: 650;
+    }
+
+    .market-link:hover {
+      color: white;
+    }
+
+    .lookup-body {
+      padding: 19px;
+    }
+
+    .lookup-control {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr) auto;
+      gap: 9px;
+    }
+
+    .lookup-results {
+      display: grid;
+      gap: 11px;
+      margin-top: 15px;
+    }
+
+    .token-card {
+      position: relative;
+      overflow: hidden;
+      padding: 16px;
+
+      border: 1px solid var(--border);
+      border-radius: 17px;
+
+      background:
+        rgba(255, 255, 255, 0.025);
+
+      transition:
+        border-color 150ms ease,
+        transform 150ms ease;
+    }
+
+    .token-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .token-card::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 3px;
+      height: 100%;
+
+      background: var(--accent);
+      content: "";
+    }
+
+    .token-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .token-id {
+      font-size: 18px;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+    }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: 9px;
+
+      margin-top: 13px;
+    }
+
+    .token-stat {
+      padding: 10px;
+
+      border: 1px solid var(--border);
+      border-radius: 12px;
+
+      background:
+        rgba(0, 0, 0, 0.12);
+    }
+
+    .token-stat-label {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .token-stat-value {
+      overflow: hidden;
+      margin-top: 4px;
+
+      font-size: 13px;
+      font-weight: 680;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .token-link {
+      display: inline-flex;
+      margin-top: 13px;
+
+      color: #baa8ff;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .empty-state {
+      padding: 30px 15px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .skeleton {
+      overflow: hidden;
+      border-radius: 8px;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03),
+          rgba(255, 255, 255, 0.09),
+          rgba(255, 255, 255, 0.03)
+        );
+
+      background-size: 220% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+
+    @keyframes shimmer {
+      to {
+        background-position: -220% 0;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-side {
+        align-items: stretch;
+      }
+
+      .metrics {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .app {
+        padding:
+          12px 12px 55px;
+      }
+
+      .topbar {
+        top: 8px;
+      }
+
+      .network {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 43px;
+      }
+
+      h1 {
+        font-size:
+          clamp(39px, 14vw, 58px);
+      }
+
+      .hero-copy {
+        font-size: 15px;
+      }
+
+      .metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .controls {
+        width: 100%;
+      }
+
+      #limit {
+        flex: 1;
+        width: auto;
+      }
+
+      .lookup-control {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .brand-subtitle {
+        display: none;
+      }
+
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-right {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <nav class="topbar glass">
+      <div class="brand">
+        <div class="brand-mark">
+          t0
+        </div>
+
+        <div class="brand-copy">
+          <div class="brand-name">
+            t00ns Intelligence
+          </div>
+
+          <div class="brand-subtitle">
+            Rarity and market analytics
+          </div>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="network">
+          <span class="network-dot"></span>
+          Ethereum
+        </div>
+
+        <div class="live-badge">
+          OpenSea live
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">
+          Collection intelligence
+        </div>
+
+        <h1>
+          Find the
+          <span class="gradient-text">
+            rarest opportunities.
+          </span>
+        </h1>
+
+        <p class="hero-copy">
+          Live OpenSea listings combined with an independently calculated
+          rarity index for the just t00ns collection.
+        </p>
+      </div>
+
+      <div class="hero-side">
+        <div class="hero-card glass">
+          <div class="hero-card-label">
+            Collection indexed
+          </div>
+
+          <div
+            id="heroIndexedSupply"
+            class="hero-card-value"
+          >
+            4,967
+          </div>
+
+          <div class="hero-card-row">
+            <div class="hero-card-note">
+              Local rarity database
+            </div>
+
+            <div class="live-badge">
+              <span class="network-dot"></span>
+              Active
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article class="metric glass">
+        <div class="metric-label">
+          Indexed supply
+        </div>
+
+        <div
+          id="indexedSupply"
+          class="metric-value"
+        >
+          4,967
+        </div>
+
+        <div class="metric-foot">
+          NFTs analyzed
+        </div>
+      </article>
+
+      <article class="metric glass">
+        <div class="metric-label">
+          Live listings
+        </div>
+
+        <div
+          id="liveResults"
+          class="metric-value"
+        >
+          —
+        </div>
+
+        <div class="metric-foot">
+          Unique tokens returned
+        </div>
+      </article>
+
+      <article class="metric glass">
+        <div class="metric-label">
+          Floor price
+        </div>
+
+        <div
+          id="floorPrice"
+          class="metric-value"
+        >
+          —
+        </div>
+
+        <div class="metric-foot">
+          Cheapest active listing
+        </div>
+      </article>
+
+      <article class="metric glass">
+        <div class="metric-label">
+          Last synchronized
+        </div>
+
+        <div
+          id="lastUpdate"
+          class="metric-value"
+        >
+          —
+        </div>
+
+        <div class="metric-foot">
+          OpenSea market data
+        </div>
+      </article>
+    </section>
+
+    <section class="dashboard">
+      <section class="panel glass">
+        <header class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              Market opportunities
+            </h2>
+
+            <p class="panel-description">
+              Lowest active listings enriched with rarity intelligence.
+            </p>
+          </div>
+
+          <div class="controls">
+            <input
+              id="limit"
+              type="number"
+              min="1"
+              max="100"
+              value="25"
+              aria-label="Listing limit"
+            >
+
+            <button
+              id="refreshButton"
+              class="primary-button"
+              type="button"
+            >
+              <svg
+                class="button-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M20 11a8 8 0 1 0-2.34 5.66M20 11V5m0 6h-6"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              Refresh
+            </button>
+          </div>
+        </header>
+
+        <p
+          id="listingStatus"
+          class="status-message"
+          aria-live="polite"
+        >
+          Loading marketplace data…
+        </p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Floor</th>
+                <th>Token</th>
+                <th>Price</th>
+                <th>Rank</th>
+                <th>Top</th>
+                <th>Tier</th>
+                <th>Market</th>
+              </tr>
+            </thead>
+
+            <tbody id="listingsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="panel glass">
+        <header class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              Rarity lookup
+            </h2>
+
+            <p class="panel-description">
+              Compare multiple token IDs instantly.
+            </p>
+          </div>
+        </header>
+
+        <div class="lookup-body">
+          <div class="lookup-control">
+            <input
+              id="lookupInput"
+              type="text"
+              value="2350, 1737"
+              placeholder="Example: 2179, 2350"
+              aria-label="Token IDs"
+            >
+
+            <button
+              id="lookupButton"
+              class="primary-button"
+              type="button"
+            >
+              Analyze
+            </button>
+          </div>
+
+          <p
+            id="lookupStatus"
+            class="status-message"
+            aria-live="polite"
+          ></p>
+
+          <div
+            id="lookupResults"
+            class="lookup-results"
+          ></div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const elements = {
+      limit:
+        document.getElementById("limit"),
+
+      refresh:
+        document.getElementById(
+          "refreshButton",
+        ),
+
+      listingStatus:
+        document.getElementById(
+          "listingStatus",
+        ),
+
+      listings:
+        document.getElementById(
+          "listingsBody",
+        ),
+
+      indexedSupply:
+        document.getElementById(
+          "indexedSupply",
+        ),
+
+      heroIndexedSupply:
+        document.getElementById(
+          "heroIndexedSupply",
+        ),
+
+      liveResults:
+        document.getElementById(
+          "liveResults",
+        ),
+
+      floorPrice:
+        document.getElementById(
+          "floorPrice",
+        ),
+
+      lastUpdate:
+        document.getElementById(
+          "lastUpdate",
+        ),
+
+      lookupInput:
+        document.getElementById(
+          "lookupInput",
+        ),
+
+      lookupButton:
+        document.getElementById(
+          "lookupButton",
+        ),
+
+      lookupStatus:
+        document.getElementById(
+          "lookupStatus",
+        ),
+
+      lookupResults:
+        document.getElementById(
+          "lookupResults",
+        ),
+    };
+
+    function setStatus(
+      element,
+      text,
+      error = false,
+    ) {
+      element.textContent = text;
+
+      element.className = error
+        ? "status-message error"
+        : "status-message";
+    }
+
+    function createCell(
+      row,
+      text,
+      className = "",
+    ) {
+      const cell =
+        document.createElement("td");
+
+      cell.textContent = text;
+
+      if (className) {
+        cell.className = className;
+      }
+
+      row.appendChild(cell);
+
+      return cell;
+    }
+
+    function tierClass(tier) {
+      const value =
+        String(tier).toLowerCase();
+
+      if (value === "legendary") {
+        return "tier tier-legendary";
+      }
+
+      if (value === "epic") {
+        return "tier tier-epic";
+      }
+
+      if (value === "rare") {
+        return "tier tier-rare";
+      }
+
+      return "tier";
+    }
+
+    function renderLoadingRows() {
+      elements.listings.replaceChildren();
+
+      for (let index = 0; index < 5; index += 1) {
+        const row =
+          document.createElement("tr");
+
+        for (
+          let column = 0;
+          column < 7;
+          column += 1
+        ) {
+          const cell =
+            document.createElement("td");
+
+          const skeleton =
+            document.createElement("div");
+
+          skeleton.className = "skeleton";
+          skeleton.style.height = "15px";
+          skeleton.style.width =
+            column === 1
+              ? "55px"
+              : "75px";
+
+          cell.appendChild(skeleton);
+          row.appendChild(cell);
+        }
+
+        elements.listings.appendChild(row);
+      }
+    }
+
+    async function loadListings() {
+      elements.refresh.disabled = true;
+
+      setStatus(
+        elements.listingStatus,
+        "Synchronizing with OpenSea…",
+      );
+
+      renderLoadingRows();
+
+      const limit =
+        Number(elements.limit.value) || 25;
+
+      try {
+        const response = await fetch(
+          "/api/cheapest?limit=" +
+            encodeURIComponent(limit),
+        );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Unable to retrieve listings.",
+          );
+        }
+
+        elements.listings.replaceChildren();
+
+        if (!data.results.length) {
+          elements.listings.innerHTML =
+            '<tr><td colspan="7" class="empty-state">No active listings found.</td></tr>';
+        }
+
+        for (const item of data.results) {
+          const row =
+            document.createElement("tr");
+
+          createCell(
+            row,
+            "#" + item.cheapestPosition,
+            "position",
+          );
+
+          createCell(
+            row,
+            "#" + item.tokenId,
+            "token-number",
+          );
+
+          createCell(
+            row,
+            item.price +
+              " " +
+              item.currency,
+            "price",
+          );
+
+          createCell(
+            row,
+            item.rarityRank === null
+              ? "Not indexed"
+              : "#" +
+                  item.rarityRank +
+                  " / " +
+                  item.rarityOutOf,
+            "rank-text",
+          );
+
+          createCell(
+            row,
+            item.topPercent === null
+              ? "—"
+              : Number(
+                  item.topPercent,
+                ).toFixed(2) + "%",
+          );
+
+          const tierCell =
+            document.createElement("td");
+
+          const tier =
+            document.createElement("span");
+
+          tier.className =
+            tierClass(item.tier);
+
+          tier.textContent =
+            item.tier;
+
+          tierCell.appendChild(tier);
+          row.appendChild(tierCell);
+
+          const marketCell =
+            document.createElement("td");
+
+          const marketLink =
+            document.createElement("a");
+
+          marketLink.className =
+            "market-link";
+
+          marketLink.href =
+            item.openseaUrl;
+
+          marketLink.target = "_blank";
+          marketLink.rel =
+            "noopener noreferrer";
+
+          marketLink.textContent =
+            "View ↗";
+
+          marketCell.appendChild(
+            marketLink,
+          );
+
+          row.appendChild(marketCell);
+          elements.listings.appendChild(row);
+        }
+
+        const formattedSupply =
+          Number(
+            data.indexedSupply,
+          ).toLocaleString();
+
+        elements.indexedSupply.textContent =
+          formattedSupply;
+
+        elements.heroIndexedSupply.textContent =
+          formattedSupply;
+
+        elements.liveResults.textContent =
+          String(data.resultCount);
+
+        const firstListing =
+          data.results[0];
+
+        elements.floorPrice.textContent =
+          firstListing
+            ? firstListing.price +
+              " " +
+              firstListing.currency
+            : "—";
+
+        elements.lastUpdate.textContent =
+          new Date(
+            data.retrievedAt,
+          ).toLocaleTimeString(
+            [],
+            {
+              hour: "2-digit",
+              minute: "2-digit",
+            },
+          );
+
+        setStatus(
+          elements.listingStatus,
+          data.resultCount +
+            " unique listings loaded · " +
+            (
+              data.cache === "hit"
+                ? "cached response"
+                : "live response"
+            ),
+        );
+      } catch (error) {
+        elements.listings.innerHTML =
+          '<tr><td colspan="7" class="empty-state">Marketplace data is temporarily unavailable.</td></tr>';
+
+        setStatus(
+          elements.listingStatus,
+          "Error: " + error.message,
+          true,
+        );
+      } finally {
+        elements.refresh.disabled = false;
+      }
+    }
+
+    async function lookupTokens() {
+      const ids =
+        elements.lookupInput.value.trim();
+
+      elements.lookupResults.replaceChildren();
+
+      if (!ids) {
+        setStatus(
+          elements.lookupStatus,
+          "Enter at least one token ID.",
+          true,
+        );
+
+        return;
+      }
+
+      elements.lookupButton.disabled = true;
+
+      setStatus(
+        elements.lookupStatus,
+        "Analyzing tokens…",
+      );
+
+      try {
+        const response = await fetch(
+          "/api/lookup?ids=" +
+            encodeURIComponent(ids),
+        );
+
+        const data =
+          await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Lookup failed.",
+          );
+        }
+
+        for (const item of data.found) {
+          const card =
+            document.createElement("article");
+
+          card.className = "token-card";
+
+          const header =
+            document.createElement("div");
+
+          header.className =
+            "token-card-header";
+
+          const tokenId =
+            document.createElement("div");
+
+          tokenId.className = "token-id";
+          tokenId.textContent =
+            "#" + item.tokenId;
+
+          const tier =
+            document.createElement("span");
+
+          tier.className =
+            tierClass(item.tier);
+
+          tier.textContent =
+            item.tier;
+
+          header.append(
+            tokenId,
+            tier,
+          );
+
+          const grid =
+            document.createElement("div");
+
+          grid.className = "token-grid";
+
+          const stats = [
+            {
+              label: "Rank",
+              value:
+                "#" +
+                item.rank +
+                " / " +
+                item.outOf,
+            },
+            {
+              label: "Top",
+              value:
+                Number(
+                  item.topPercent,
+                ).toFixed(2) + "%",
+            },
+            {
+              label: "Traits",
+              value:
+                item.traitCount ??
+                "—",
+            },
+            {
+              label: "Score",
+              value:
+                item.informationScore ??
+                item.rarityScore ??
+                "—",
+            },
+          ];
+
+          for (const stat of stats) {
+            const statElement =
+              document.createElement("div");
+
+            statElement.className =
+              "token-stat";
+
+            const label =
+              document.createElement("div");
+
+            label.className =
+              "token-stat-label";
+
+            label.textContent =
+              stat.label;
+
+            const value =
+              document.createElement("div");
+
+            value.className =
+              "token-stat-value";
+
+            value.textContent =
+              stat.value;
+
+            statElement.append(
+              label,
+              value,
+            );
+
+            grid.appendChild(
+              statElement,
+            );
+          }
+
+          const link =
+            document.createElement("a");
+
+          link.className =
+            "token-link";
+
+          link.href = item.openseaUrl;
+          link.target = "_blank";
+          link.rel =
+            "noopener noreferrer";
+
+          link.textContent =
+            "Open on OpenSea ↗";
+
+          card.append(
+            header,
+            grid,
+            link,
+          );
+
+          elements.lookupResults.appendChild(
+            card,
+          );
+        }
+
+        if (data.missing.length) {
+          const missing =
+            document.createElement("div");
+
+          missing.className =
+            "token-card";
+
+          missing.textContent =
+            "Not indexed: " +
+            data.missing
+              .map(
+                (tokenId) =>
+                  "#" + tokenId,
+              )
+              .join(", ");
+
+          elements.lookupResults.appendChild(
+            missing,
+          );
+        }
+
+        setStatus(
+          elements.lookupStatus,
+          data.found.length +
+            " token" +
+            (
+              data.found.length === 1
+                ? ""
+                : "s"
+            ) +
+            " analyzed.",
+        );
+      } catch (error) {
+        setStatus(
+          elements.lookupStatus,
+          "Error: " + error.message,
+          true,
+        );
+      } finally {
+        elements.lookupButton.disabled = false;
+      }
+    }
+
+    elements.refresh.addEventListener(
+      "click",
+      loadListings,
+    );
+
+    elements.lookupButton.addEventListener(
+      "click",
+      lookupTokens,
+    );
+
+    elements.lookupInput.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "Enter") {
+          lookupTokens();
+        }
+      },
+    );
+
+    loadListings();
+    lookupTokens();
+  </script>
+</body>
+</html>
