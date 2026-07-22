@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+
+node_modules/
+
+*.backup
+*.tmp
+
+t00ns-metadata-cache.json
+t00ns-opensea-cache.json
+t00ns-cheapest-live.json
+t00ns-cheapest-live.csv
+t00ns-rarity-full.json
+t00ns-collection-stats.json
