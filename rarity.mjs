@@ -57,7 +57,7 @@ const CONTRACT_ADDRESS =
   "0x902d94ba5bfc0cb408d1a6ca4b8f255d845e50e9";
 
 const EXPECTED_COLLECTION_SIZE = Number(
-  process.env.COLLECTION_SIZE ?? 5000,
+  process.env.COLLECTION_SIZE ?? 4967,
 );
 
 const PAGE_SIZE = Math.min(
