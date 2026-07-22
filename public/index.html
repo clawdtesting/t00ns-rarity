@@ -705,6 +705,26 @@
       color: #9ac7ff;
     }
 
+    .tier-uncommon {
+      border-color:
+        rgba(82, 221, 161, 0.25);
+
+      background:
+        rgba(82, 221, 161, 0.08);
+
+      color: #8af0c3;
+    }
+
+    .tier-common {
+      border-color:
+        rgba(255, 255, 255, 0.08);
+
+      background:
+        rgba(255, 255, 255, 0.025);
+
+      color: #7a7a8a;
+    }
+
     .market-link {
       display: inline-flex;
       align-items: center;
@@ -1316,6 +1336,14 @@
 
       if (value === "rare") {
         return "tier tier-rare";
+      }
+
+      if (value === "uncommon") {
+        return "tier tier-uncommon";
+      }
+
+      if (value === "common") {
+        return "tier tier-common";
       }
 
       return "tier";
