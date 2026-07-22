@@ -350,6 +350,18 @@
       box-shadow: var(--shadow);
     }
 
+    .hero-nft-image {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      margin-bottom: 14px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+
+      object-fit: cover;
+    }
+
     .hero-card-label {
       color: var(--muted);
       font-size: 12px;
@@ -370,10 +382,34 @@
       align-items: center;
       justify-content: space-between;
 
-      margin-top: 18px;
-      padding-top: 16px;
+      margin-top: 14px;
+      padding-top: 14px;
 
       border-top: 1px solid var(--border);
+    }
+
+    .hero-card-stats {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hero-stat-label {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .hero-stat-value {
+      font-size: 13px;
+      font-weight: 680;
     }
 
     .hero-card-note {
@@ -1008,26 +1044,41 @@
 
       <div class="hero-side">
         <div class="hero-card glass">
-          <div class="hero-card-label">
-            Collection indexed
-          </div>
-
-          <div
-            id="heroIndexedSupply"
-            class="hero-card-value"
+          <img
+            id="heroNftImage"
+            class="hero-nft-image"
+            src="https://ipfs.io/ipfs/bafybeifdcrurp2fi7kbrica37hjddicrb2gm4zotel2izo5zr5owxhtqnq"
+            alt="just t00ns #3145"
+            loading="lazy"
           >
-            4,967
+
+          <div class="hero-card-label">
+            just t00ns #3145
           </div>
 
           <div class="hero-card-row">
-            <div class="hero-card-note">
-              Local rarity database
+            <div class="hero-card-stats">
+              <div class="hero-stat">
+                <span class="hero-stat-label">Rank</span>
+                <span class="hero-stat-value">#240 / 4,967</span>
+              </div>
+              <div class="hero-stat">
+                <span class="hero-stat-label">Top</span>
+                <span class="hero-stat-value">4.83%</span>
+              </div>
+              <div class="hero-stat">
+                <span id="heroCardTier" class="tier tier-epic">Epic</span>
+              </div>
             </div>
 
-            <div class="live-badge">
-              <span class="network-dot"></span>
-              Active
-            </div>
+            <a
+              class="market-link"
+              href="https://opensea.io/assets/ethereum/0x902d94ba5bfc0cb408d1a6ca4b8f255d845e50e9/3145"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View ↗
+            </a>
           </div>
         </div>
       </div>
@@ -1248,11 +1299,6 @@
       indexedSupply:
         document.getElementById(
           "indexedSupply",
-        ),
-
-      heroIndexedSupply:
-        document.getElementById(
-          "heroIndexedSupply",
         ),
 
       liveResults:
@@ -1510,9 +1556,6 @@
           ).toLocaleString();
 
         elements.indexedSupply.textContent =
-          formattedSupply;
-
-        elements.heroIndexedSupply.textContent =
           formattedSupply;
 
         elements.liveResults.textContent =
